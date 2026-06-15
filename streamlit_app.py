@@ -6,27 +6,30 @@ import streamlit as st
 
 from sia_core import load_model, normalize_columns, predict_with_dossiers, train_model
 
-
 st.set_page_config(page_title="Support Integrity Auditor", layout="wide")
 st.title("Support Integrity Auditor")
 
 MODEL_PATH = Path("models/sia_model.pkl")
-SAMPLE_PATH = Path("data/sample_tickets.csv")
-
+# Fixed: Point to your verified repository file path
+SAMPLE_PATH = Path("data/adversarial_tickets.csv")
 
 @st.cache_resource
 def get_model():
     if MODEL_PATH.exists():
         return load_model(MODEL_PATH)
-    sample = pd.read_csv(SAMPLE_PATH)
-    model, _, _ = train_model(normalize_columns(sample), "models")
-    return model
-
+    
+    # Fallback to keep app running if model weights are missing
+    if SAMPLE_PATH.exists():
+        sample = pd.read_csv(SAMPLE_PATH)
+        model, _, _ = train_model(normalize_columns(sample), "models")
+        return model
+    else:
+        st.error(f"Critical Error: {SAMPLE_PATH} not found. Please upload a CSV batch.")
+        st.stop()
 
 def audit_dataframe(df):
     model = get_model()
     return predict_with_dossiers(df, model)
-
 
 tab_single, tab_batch, tab_dashboard = st.tabs(["Single Ticket", "Batch CSV", "Dashboard"])
 
@@ -99,6 +102,7 @@ with tab_batch:
     )
 
 with tab_dashboard:
+    # Safely building default dashboard view metrics
     df = audit_dataframe(pd.read_csv(SAMPLE_PATH))
     c1, c2, c3 = st.columns(3)
     c1.metric("Tickets Audited", len(df))
@@ -108,10 +112,15 @@ with tab_dashboard:
     left, right = st.columns(2)
     with left:
         st.subheader("Mismatch Types")
-        st.bar_chart(df["mismatch_type"].value_counts())
+        if "mismatch_type" in df.columns and not df["mismatch_type"].isna().all():
+            st.bar_chart(df["mismatch_type"].value_counts())
+        else:
+            st.info("No active mismatches loaded to segment by distribution type.")
     with right:
         st.subheader("Top Signal Scores")
-        st.bar_chart(df[["text_signal_score", "resolution_signal_score"]])
+        # Checking columns dynamically depending on source labels
+        available_signals = [col for col in ["text_signal_score", "resolution_signal_score", "severity_delta"] if col in df.columns]
+        st.bar_chart(df[available_signals])
 
     st.subheader("Severity Delta Heatmap")
     heatmap_data = df.pivot_table(
