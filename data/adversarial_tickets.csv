@@ -1,0 +1,3 @@
+Ticket ID,Ticket Subject,Ticket Description,Ticket Priority,Ticket Channel,Resolution Time,Ticket Type,Product Purchased,Customer Email
+A-0001,System Down,The payment database is completely broken and throwing connection errors. Customers cannot check out.,Low,Chat,120,Refund,Premium Tier,enterprise@corp.com
+A-0002,URGENT HELP PLEASE,How do I change my custom profile background image? Please fix this catastrophe right away!!!,Critical,Email,1,Inquiry,Basic Tier,consumer@gmail.com
