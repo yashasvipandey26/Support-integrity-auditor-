@@ -2,7 +2,7 @@
 
 Support Integrity Auditor is a beginner-friendly NLP project that detects possible priority mismatch in support tickets. It infers a ticket's likely severity from ticket content and resolution time, compares that severity with the human-assigned priority, trains a binary classifier from the generated pseudo-labels, and produces a grounded Evidence Dossier for each flagged ticket.
 
-This version is intentionally not too advanced. It uses scikit-learn, TF-IDF, metadata features, and transparent rules instead of a large LLM. If your evaluator strictly requires a LoRA/DeBERTa fine-tune, see the "What You May Need To Do Yourself" section.
+**Live Web App URL:** https://supportintergrityauditor.streamlit.app/
 
 ## Deliverables Included
 
