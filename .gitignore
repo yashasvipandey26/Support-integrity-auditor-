@@ -1,0 +1,4 @@
+venv/
+__pycache__/
+*.pyc
+data/customer_support_tickets.csv

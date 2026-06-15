@@ -1,0 +1,22 @@
+{
+  "accuracy": 0.8765,
+  "macro_f1": 0.8594828057016985,
+  "per_class_recall": {
+    "consistent": 0.8850740874593422,
+    "mismatched": 0.8572587185725872
+  },
+  "classification_report": "              precision    recall  f1-score   support\n\n           0       0.93      0.89      0.91      2767\n           1       0.77      0.86      0.81      1233\n\n    accuracy                           0.88      4000\n   macro avg       0.85      0.87      0.86      4000\nweighted avg       0.88      0.88      0.88      4000\n",
+  "confusion_matrix": [
+    [
+      2449,
+      318
+    ],
+    [
+      176,
+      1057
+    ]
+  ],
+  "pseudo_label_signal_agreement": 0.2435,
+  "row_count": 20000,
+  "mismatch_rate": 0.30835
+}
